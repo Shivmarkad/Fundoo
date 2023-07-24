@@ -6,10 +6,10 @@ import { newUserValidator } from '../validators/user.validator';
 const router = express.Router();
 
 //route to create a new user
-router.post('', newUserValidator, userController.signUp); //signup
+router.post('', newUserValidator, userController.signUp); 
 
-//to login the user
-// router.get('/login',userController.signIn)       //sign
+// to login the user
+router.post('/login',userController.signIn)      
 
 
 export default router;

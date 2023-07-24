@@ -9,7 +9,7 @@ import userRoute from './user.route';
  */
 const routes = () => {
   router.get('/', (req, res) => {
-    res.json('Welcome');
+    res.json('Welcome to Fundoo App');
   });
   router.use('/users', userRoute);
 
