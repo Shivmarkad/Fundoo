@@ -4,7 +4,7 @@ const User = require('../models/user')(sequelize, DataTypes);
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-// dotenv.config();
+dotenv.config();
 
 //signUp for new user
 export const signUp = async (body) => {
@@ -26,11 +26,11 @@ export const signIn = async (email, password) => {
   if (data == null) {
     throw new Error("user not found");
   } ;
-  const hash = data.password;
-  const isTrue = bcrypt.compareSync(password, hash);
+  const hashedPassword = data.password;
+  const isTrue = bcrypt.compareSync(password, hashedPassword);
 
   if (isTrue) {
-    var token = jwt.sign({ foo: 'bar' },process.env.SECRET_KEY);
+    var token = jwt.sign({email: data.email, id: data.id },process.env.SECRET_KEY); 
     return token;
   } else {
     throw new Error("Password Incorrect");
