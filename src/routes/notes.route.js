@@ -6,10 +6,18 @@ import { userAuth } from '../middlewares/auth.middleware';
 const router = express.Router();
 
 //route to create a note
-router.post('',notesValidator, notesController.createNote); 
+router.post('', userAuth, notesValidator, notesController.createNote);
 
 // to get note
-router.get('',userAuth,notesController.getAllNotes)      
+router.get('', userAuth, notesController.getAllNotes)
 
+//get note by id
+router.get('/:id', userAuth, notesController.findNoteById)
+
+//update note by id
+router.put('/:id', userAuth, notesController.updateNoteById)
+
+//delete note by id
+router.delete('/:id', userAuth, notesController.deleteNoteById)
 
 export default router;
