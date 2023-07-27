@@ -77,7 +77,7 @@ export const isArchieve = async (req, res, next) => {
 };
 export const isTrash = async (req, res, next) => {
   try {
-    const data = await notes.isTrash(req.params.id);
+    const data = await notes.isTrash();
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
