@@ -63,3 +63,27 @@ export const deleteNoteById = async (req, res, next) => {
     next(error);
   }
 };
+export const isArchieve = async (req, res, next) => {
+  try {
+    const data = await notes.isArchieve();
+    res.status(HttpStatus.OK).json({
+      code: HttpStatus.OK,
+      data: data,
+      message: 'Archieved Note fetched successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+export const isTrash = async (req, res, next) => {
+  try {
+    const data = await notes.isTrash(req.params.id);
+    res.status(HttpStatus.OK).json({
+      code: HttpStatus.OK,
+      data: data,
+      message: 'Trashed notes fetched successfully'
+    });
+  } catch (error) {
+    next(error);
+  }
+};

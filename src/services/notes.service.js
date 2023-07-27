@@ -41,3 +41,19 @@ export const deleteNoteById = async (id) => {
   };
   throw new Error("Unable to delete note");
 };
+
+export const isArchieve = async () => {
+  const note = await Notes.findAll({ where: { isArchieve: true } });
+  if (note) {
+    return note;
+  };
+  throw new Error("Nothing is Archieved");
+};
+
+export const isTrash = async () => {
+  const note = await Notes.findAll({ where: { isTrash: true } });
+  if (note) {
+    return note;  
+  };
+  throw new Error("Nothing is in Trash");
+};

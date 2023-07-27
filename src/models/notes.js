@@ -15,7 +15,10 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       description: DataTypes.STRING,
-      color: DataTypes.STRING
+      color: DataTypes.STRING,
+      createdBy: DataTypes.STRING,
+      isArchieve: {type: DataTypes.BOOLEAN, defaultValue: false},
+      isTrash: {type: DataTypes.BOOLEAN, defaultValue : false}
     },
     {
       sequelize,
