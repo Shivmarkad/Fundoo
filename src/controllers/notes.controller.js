@@ -3,7 +3,7 @@ import * as notes from '../services/notes.service';
 
 export const getAllNotes = async (req, res, next) => {
   try {
-    const data = await notes.getAllNotes();
+    const data = await notes.getAllNotes(req);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -17,6 +17,7 @@ export const getAllNotes = async (req, res, next) => {
 export const createNote = async (req, res, next) => {
   try {
     const data = await notes.createNote(req.body);
+
     res.status(HttpStatus.CREATED).json({
       code: HttpStatus.CREATED,
       data: data,
@@ -28,7 +29,7 @@ export const createNote = async (req, res, next) => {
 };
 export const findNoteById = async (req, res, next) => {
   try {
-    const data = await notes.findNoteById(req.params.id);
+    const data = await notes.findNoteById(req.params.id,req);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -53,7 +54,7 @@ export const updateNoteById = async (req, res, next) => {
 
 export const deleteNoteById = async (req, res, next) => {
   try {
-    const data = await notes.deleteNoteById(req.params.id);
+    const data = await notes.deleteNoteById(req.params.id,req.body);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -65,11 +66,11 @@ export const deleteNoteById = async (req, res, next) => {
 };
 export const isArchieve = async (req, res, next) => {
   try {
-    const data = await notes.isArchieve();
+    const data = await notes.isArchieve(req.params.id,req.body);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
-      message: 'Archieved Note fetched successfully'
+      message: 'Note Archieved successfully'
     });
   } catch (error) {
     next(error);
@@ -77,11 +78,11 @@ export const isArchieve = async (req, res, next) => {
 };
 export const isTrash = async (req, res, next) => {
   try {
-    const data = await notes.isTrash();
+    const data = await notes.isTrash(req.params.id,req.body);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
-      message: 'Trashed notes fetched successfully'
+      message: 'Note Trashed successfully'
     });
   } catch (error) {
     next(error);
