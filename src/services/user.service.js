@@ -35,29 +35,30 @@ export const signIn = async (email, password) => {
   } else {
     throw new Error("Password Incorrect");
   }
-}
+};
+
 //reset password
-export const resetPassword = async (email, password) => {
+export const resetPassword = async (password, id) => {
 
   const saltRounds = 10;
   const hash = bcrypt.hashSync(password, saltRounds);
   password = hash;
-  const data = await User.update({password:password},{where: {email: email}})
+  const data = await User.update({password:password},{where: {id: id}})
   if (data) {
     return data.email;
   } else {
     throw new Error("Unable to reset Password");
   }
-}
+};
+
+//forgot password
 export const forgotPassword = async (email, password) => {
-
-  const saltRounds = 10;
-  const hash = bcrypt.hashSync(password, saltRounds);
-  password = hash;
-  const data = await User.update({password:password},{where: {email: email}})
+  
+  const data = await User.findOne({ where: { email: email } });
   if (data) {
-    return data.email;
+    var token = jwt.sign({ email: data.email, id: data.id }, process.env.SECRET_KEY);
+    return token;
   } else {
-    throw new Error("Unable to reset Password");
-  }
-}
+    throw new Error("Unable to change Password");
+  };
+};

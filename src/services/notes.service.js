@@ -49,11 +49,11 @@ export const isArchieve = async (id, body) => {
   const archieveNote = await Notes.findOne({ where: { id: id, createdBy: body.createdBy } });
 
   if (archieveNote.isArchieve) {
-    const note = await Notes.update({ isArchieve: false }, { where: { id: id, createdBy: body.createdBy } });
-    return note;
+    await Notes.update({ isArchieve: false }, { where: { id: id, createdBy: body.createdBy } });
+    return "UnArchieved";
   } else {
-    const note = await Notes.update({ isArchieve: true }, { where: { id: id, createdBy: body.createdBy } });
-    return note;
+    await Notes.update({ isArchieve: true }, { where: { id: id, createdBy: body.createdBy } });
+    return "Archieved";
   }
 };
 
@@ -62,9 +62,9 @@ export const isTrash = async (id, body) => {
 
   if (trashNote.isTrash) {
     const note = await Notes.update({ isTrash: false }, { where: { id: id, createdBy: body.createdBy } });
-    return note;
+    return "UnTrashed";
   } else {
     const note = await Notes.update({ isTrash: true }, { where: { id: id, createdBy: body.createdBy } });
-    return note;
+    return "Trashed";
   };
 };

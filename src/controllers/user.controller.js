@@ -14,7 +14,6 @@ export const signUp = async (req, res, next) => {
   }
 };
 
-
 export const signIn = async (req, res, next)=>{    
   try {
     const data = await UserService.signIn(req.body.email, req.body.password);
@@ -30,11 +29,11 @@ export const signIn = async (req, res, next)=>{
 
 export const resetPassword = async (req, res, next)=>{    
   try {
-    const data = await UserService.resetPassword(req.body.email, req.body.password);
+    const data = await UserService.resetPassword(req.body.password,req.body.createdBy);
     res.status(HttpStatus.OK).json({
       code : HttpStatus.OK,
       data : data,
-     message: "password changed successfully"
+     message: "password updated successfully"
     });
   } catch(error){
     next(error);

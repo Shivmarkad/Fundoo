@@ -9,12 +9,12 @@ const router = express.Router();
 router.post('', newUserValidator, userController.signUp); 
 
 // to login the user
-router.post('/login',userController.signIn)      
+router.post('/login',userController.signIn)
 
 // to reset password
 router.post('/reset',userAuth,userController.resetPassword)
 
 // to reset password
-router.post('/forgot',userAuth,userController.forgotPassword)
+router.post('/forgot',userController.forgotPassword)
 
 export default router;
