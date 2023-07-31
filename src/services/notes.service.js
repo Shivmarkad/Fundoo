@@ -5,7 +5,7 @@ import notes from '../models/notes';
 const Notes = require('../models/notes')(sequelize, DataTypes);
 
 export const getAllNotes = async (req) => {
-  const note = await Notes.findAll({ where: { createdBy: req.body.createdBy} });
+  const note = await Notes.findAll({ where: { createdBy: req.body.createdBy } });
   if (note) {
     return note;
   };
@@ -21,7 +21,7 @@ export const createNote = async (body) => {
 };
 
 export const findNoteById = async (id, req) => {
-  const note = await Notes.findOne({ where: { id: id , createdBy: req.body.createdBy }});
+  const note = await Notes.findOne({ where: { id: id, createdBy: req.body.createdBy } });
   if (note) {
     return note;
   };
@@ -29,34 +29,42 @@ export const findNoteById = async (id, req) => {
 };
 
 export const updateNoteById = async (body, id) => {
-  const note = await Notes.update({ title: body.title, description: body.description }, { where: {  id: id , createdBy: body.createdBy } });
+  const note = await Notes.update({ title: body.title, description: body.description }, { where: { id: id, createdBy: body.createdBy } });
   if (note) {
     return note;
   };
   throw new Error("Unable to update the note");
 };
 
-export const deleteNoteById = async (id,body) => {
-  const note = await Notes.destroy({ where: {id: id ,createdBy: body.createdBy} });
+export const deleteNoteById = async (id, body) => {
+  const note = await Notes.destroy({ where: { id: id, createdBy: body.createdBy } });
   if (note) {
     return note;
   };
   throw new Error("Unable to delete note");
 };
 
-export const isArchieve = async (id,body) => {
-  
-  const note = await Notes.update({isArchieve:true},{ where: { id: id, createdBy: body.createdBy } });
-  if (note) {
+export const isArchieve = async (id, body) => {
+
+  const archieveNote = await Notes.findOne({ where: { id: id, createdBy: body.createdBy } });
+
+  if (archieveNote.isArchieve) {
+    const note = await Notes.update({ isArchieve: false }, { where: { id: id, createdBy: body.createdBy } });
     return note;
-  };
-  throw new Error("Note Archieved");
+  } else {
+    const note = await Notes.update({ isArchieve: true }, { where: { id: id, createdBy: body.createdBy } });
+    return note;
+  }
 };
 
-export const isTrash = async (id,body) => {
-  const note = await Notes.update({isTrash:true},{ where: { id: id, createdBy: body.createdBy } });
-  if (note) {
+export const isTrash = async (id, body) => {
+  const trashNote = await Notes.findOne({ where: { id: id, createdBy: body.createdBy } });
+
+  if (trashNote.isTrash) {
+    const note = await Notes.update({ isTrash: false }, { where: { id: id, createdBy: body.createdBy } });
+    return note;
+  } else {
+    const note = await Notes.update({ isTrash: true }, { where: { id: id, createdBy: body.createdBy } });
     return note;
   };
-  throw new Error("Moved to Trash");
 };
