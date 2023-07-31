@@ -27,3 +27,29 @@ export const signIn = async (req, res, next)=>{
     next(error);
   }
 }
+
+export const resetPassword = async (req, res, next)=>{    
+  try {
+    const data = await UserService.resetPassword(req.body.email, req.body.password);
+    res.status(HttpStatus.OK).json({
+      code : HttpStatus.OK,
+      data : data,
+     message: "password changed successfully"
+    });
+  } catch(error){
+    next(error);
+  }
+}
+
+export const forgotPassword = async (req, res, next)=>{    
+  try {
+    const data = await UserService.forgotPassword(req.body.email, req.body.password);
+    res.status(HttpStatus.OK).json({
+      code : HttpStatus.OK,
+      data : data,
+     message: "password changed successfully"
+    });
+  } catch(error){
+    next(error);
+  }
+}

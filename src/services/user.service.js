@@ -36,3 +36,28 @@ export const signIn = async (email, password) => {
     throw new Error("Password Incorrect");
   }
 }
+//reset password
+export const resetPassword = async (email, password) => {
+
+  const saltRounds = 10;
+  const hash = bcrypt.hashSync(password, saltRounds);
+  password = hash;
+  const data = await User.update({password:password},{where: {email: email}})
+  if (data) {
+    return data.email;
+  } else {
+    throw new Error("Unable to reset Password");
+  }
+}
+export const forgotPassword = async (email, password) => {
+
+  const saltRounds = 10;
+  const hash = bcrypt.hashSync(password, saltRounds);
+  password = hash;
+  const data = await User.update({password:password},{where: {email: email}})
+  if (data) {
+    return data.email;
+  } else {
+    throw new Error("Unable to reset Password");
+  }
+}

@@ -5,7 +5,7 @@ import notes from '../models/notes';
 const Notes = require('../models/notes')(sequelize, DataTypes);
 
 export const getAllNotes = async (req) => {
-  const note = await Notes.findAll({ where: { createdBy: req.body.createdBy,isArchieve: false,isTrash:false } });
+  const note = await Notes.findAll({ where: { createdBy: req.body.createdBy} });
   if (note) {
     return note;
   };
@@ -21,7 +21,7 @@ export const createNote = async (body) => {
 };
 
 export const findNoteById = async (id, req) => {
-  const note = await Notes.findOne({ where: { id: id ,  createdBy: req.body.createdBy }});
+  const note = await Notes.findOne({ where: { id: id , createdBy: req.body.createdBy }});
   if (note) {
     return note;
   };
@@ -45,6 +45,7 @@ export const deleteNoteById = async (id,body) => {
 };
 
 export const isArchieve = async (id,body) => {
+  
   const note = await Notes.update({isArchieve:true},{ where: { id: id, createdBy: body.createdBy } });
   if (note) {
     return note;

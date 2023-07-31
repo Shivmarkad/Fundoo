@@ -11,11 +11,6 @@ router.post('', notesValidator,userAuth, notesController.createNote);
 // to get note
 router.get('', userAuth, notesController.getAllNotes);
 
-//archieved notes
-router.post('/archieve/:id', userAuth, notesController.isArchieve);
-
-//trashed notes
-router.post('/trash/:id', userAuth, notesController.isTrash);
 
 //get note by id
 router.get('/:id', userAuth, notesController.findNoteById);
@@ -26,4 +21,9 @@ router.put('/:id', userAuth, notesController.updateNoteById);
 //delete note by id
 router.delete('/:id', userAuth, notesController.deleteNoteById);
 
+//archieved notes
+router.put('/archieve/:id', userAuth, notesController.isArchieve);
+
+//trashed notes
+router.put('/trash/:id', userAuth, notesController.isTrash);
 export default router;
