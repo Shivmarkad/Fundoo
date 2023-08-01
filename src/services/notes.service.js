@@ -45,19 +45,15 @@ export const deleteNoteById = async (id, body) => {
 };
 
 export const isArchieve = async (id, body) => {
-
   const archieveNote = await Notes.findOne({ where: { id: id, createdBy: body.createdBy } });
   let archieveStatus;
-
-  archieveNote.isArchieve ? archieveStatus=false : archieveStatus=true;
-  await Notes.update({ isArchieve: archieveStatus}, { where: { id: id, createdBy: body.createdBy } });
+  archieveNote.isArchieve ? archieveStatus = false : archieveStatus = true;
+  await Notes.update({ isArchieve: archieveStatus }, { where: { id: id, createdBy: body.createdBy } });
 };
 
 export const isTrash = async (id, body) => {
   const trashNote = await Notes.findOne({ where: { id: id, createdBy: body.createdBy } });
-  
   let trashStatus;
-
-  trashNote.isTrash ? trashStatus=false : trashStatus=true;
+  trashNote.isTrash ? trashStatus = false : trashStatus = true;
   const note = await Notes.update({ isTrash: trashStatus }, { where: { id: id, createdBy: body.createdBy } });
 };

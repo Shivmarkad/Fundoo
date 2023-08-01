@@ -10,7 +10,10 @@ export const getAllNotes = async (req, res, next) => {
       message: 'Notes fetched successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };
 
@@ -24,7 +27,10 @@ export const createNote = async (req, res, next) => {
       message: 'Note created successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };
 export const findNoteById = async (req, res, next) => {
@@ -36,7 +42,10 @@ export const findNoteById = async (req, res, next) => {
       message: 'Note fetched successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };
 export const updateNoteById = async (req, res, next) => {
@@ -48,7 +57,10 @@ export const updateNoteById = async (req, res, next) => {
       message: 'Note updated successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };
 
@@ -61,7 +73,10 @@ export const deleteNoteById = async (req, res, next) => {
       message: 'Note deleted successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };
 export const isArchieve = async (req, res, next) => {
@@ -73,7 +88,10 @@ export const isArchieve = async (req, res, next) => {
       message: 'Note Archieved successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };
 export const isTrash = async (req, res, next) => {
@@ -85,6 +103,9 @@ export const isTrash = async (req, res, next) => {
       message: 'Note Trashed successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };

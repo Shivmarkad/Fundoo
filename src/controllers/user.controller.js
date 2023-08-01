@@ -10,7 +10,10 @@ export const signUp = async (req, res, next) => {
       message: 'User created successfully'
     });
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 };
 
@@ -23,7 +26,10 @@ export const signIn = async (req, res, next)=>{
      message: "User Login successfully"
     });
   } catch(error){
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 }
 
@@ -36,19 +42,25 @@ export const resetPassword = async (req, res, next)=>{
      message: "password updated successfully"
     });
   } catch(error){
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+    code : HttpStatus.BAD_REQUEST,
+   message: `${error}`
+  });
   }
 }
 
 export const forgotPassword = async (req, res, next)=>{    
   try {
-    const data = await UserService.forgotPassword(req.body.email, req.body.password);
+    const data = await UserService.forgotPassword(req.body.email);
     res.status(HttpStatus.OK).json({
       code : HttpStatus.OK,
       data : data,
-     message: "password changed successfully"
+     message: "token has been sent to your mail address"
     });
   } catch(error){
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+      code : HttpStatus.BAD_REQUEST,
+     message: `${error}`
+    });
   }
 }
