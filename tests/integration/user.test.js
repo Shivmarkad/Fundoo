@@ -2,8 +2,9 @@ import { expect } from 'chai';
 import request from 'supertest';
 
 import app from '../../src/index';
+import { details } from '@hapi/joi/lib/errors';
 
-let token ;
+var token ;
 
 describe('User APIs Test', () => {
   describe('Post /users', () => {
@@ -11,7 +12,7 @@ describe('User APIs Test', () => {
       let details = {
         "firstName":"shiv",
         "lastName":"mark",
-        "email":"shiv@w223",
+        "email":"shivganesh3@223",
         "password":"31231234"
       }
       request(app)
@@ -19,7 +20,7 @@ describe('User APIs Test', () => {
         .send(details)
         .end((err, res) => {
           expect(res.statusCode).to.be.equal(201);
-          // expect(res.body.data).to.be.an('array');
+          // expect(res.body.data).to.be.an('json');
 
           done();
         });
@@ -27,13 +28,33 @@ describe('User APIs Test', () => {
   });
   describe('Post /login', () => {
     it('should return user login successfully', (done) => {
-
+      let details = {
+        "email":"shivganesh3@223",
+        "password":"31231234"
+      }
       request(app)
-        .get('/api/v1/users/login')
+        .post('/api/v1/users/login')
+        .send(details)
         .end((err, res) => {
-          // token = 
+          token = res.body.data;
           expect(res.statusCode).to.be.equal(200);
-          expect(res.body.data).to.be.an('array');
+          // expect(res.body.data).to.be.an('json');
+
+          done();
+        });
+    });
+  });
+  describe('Post /login', () => {
+    it('should return invalid details', (done) => {
+      let details = {
+        "email":"shivganeshmarkad123@gmail.com",
+      }
+      request(app)
+        .post('/api/v1/users/login')
+        .send(details)
+        .end((err, res) => {
+          expect(res.statusCode).to.be.equal(400);
+          // expect(res.body.data).to.be.an('array');
 
           done();
         });
