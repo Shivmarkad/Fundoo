@@ -14,16 +14,17 @@ dotenv.config();
 export const userAuth = async (req, res, next) => {
   try {
     let bearerToken = req.header('Authorization');
-    if (!bearerToken)
-      throw {
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Authorization token is required'
-      };
+    if (!bearerToken){
+    throw new Error("Authorization token required !!")
+    }
     bearerToken = bearerToken.split(' ')[1];
     const user = jwt.verify(bearerToken, process.env.SECRET_KEY);
     req.body.createdBy = user.id;
     next()
   } catch (error) {
-    throw new Error(`Error while authorization of the user : ${error}`);
+    res.status(HttpStatus.BAD_REQUEST).json({
+    code : HttpStatus.BAD_REQUEST,
+   message: `Error occured while authorization ${error}`
+  });
   }
 };
