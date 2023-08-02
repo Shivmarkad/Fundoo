@@ -1,6 +1,7 @@
 import HttpStatus from 'http-status-codes';
 import * as UserService from '../services/user.service';
-
+import {userlogger} from '../config/logger';
+import { error } from '@hapi/joi/lib/base';
 export const signUp = async (req, res, next) => {  
   try {
     const data = await UserService.signUp(req.body);
@@ -9,11 +10,13 @@ export const signUp = async (req, res, next) => {
       data: data,
       message: 'User created successfully'
     });
+    userlogger.log('info',`User created successfully ${data}`)
   } catch (error) {
     res.status(HttpStatus.BAD_REQUEST).json({
       code : HttpStatus.BAD_REQUEST,
      message: `${error}`
     });
+      userlogger.log('error',`Error while signUp ${error}`)
   }
 };
 
@@ -25,11 +28,14 @@ export const signIn = async (req, res, next)=>{
       data : data,
      message: "User Login successfully"
     });
+    userlogger.log('info',`User signed in successfully ${req.body.email}`)
+
   } catch(error){
     res.status(HttpStatus.BAD_REQUEST).json({
       code : HttpStatus.BAD_REQUEST,
      message: `${error}`
     });
+    userlogger.log('error',`Error while sign in ${error}`)
   }
 }
 
@@ -41,11 +47,13 @@ export const resetPassword = async (req, res, next)=>{
       data : data,
      message: "password updated successfully"
     });
+    userlogger.log('info',`password reset successfully ${data}`)
   } catch(error){
     res.status(HttpStatus.BAD_REQUEST).json({
     code : HttpStatus.BAD_REQUEST,
    message: `${error}`
   });
+  userlogger.log('error',`error while reset password ${error}`)
   }
 }
 
@@ -57,6 +65,7 @@ export const forgotPassword = async (req, res, next)=>{
       data : data,
      message: "token has been sent to your mail address"
     });
+    userlogger.log('info',`token send to mail to reset password ${req.body.email}`)
   } catch(error){
     res.status(HttpStatus.BAD_REQUEST).json({
       code : HttpStatus.BAD_REQUEST,
