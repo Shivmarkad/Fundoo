@@ -1,12 +1,14 @@
-import { where } from 'sequelize';
 import sequelize, { DataTypes } from '../config/database';
-import notes from '../models/notes';
+import { client } from '../config/redis';
 
 const Notes = require('../models/notes')(sequelize, DataTypes);
 
 export const getAllNotes = async (req) => {
   const note = await Notes.findAll({ where: { createdBy: req.body.createdBy } });
   if (note) {
+    const id = req.body.createdBy.toString();
+    const noteData = JSON.stringify(note);
+    await client.set(id,noteData);
     return note;
   };
   throw new Error("Unable to find");
@@ -14,7 +16,10 @@ export const getAllNotes = async (req) => {
 
 export const createNote = async (body) => {
   const note = await Notes.create(body);
+
   if (note) {
+    const id = body.createdBy.toString();
+    await client.del(id);
     return note;
   };
   throw new Error("unable to create note");
@@ -31,6 +36,8 @@ export const findNoteById = async (id, req) => {
 export const updateNoteById = async (body, id) => {
   const note = await Notes.update({ title: body.title, description: body.description }, { where: { id: id, createdBy: body.createdBy } });
   if (note) {
+    const id = body.createdBy.toString();
+    await client.del(id);
     return note;
   };
   throw new Error("Unable to update the note");
@@ -39,6 +46,8 @@ export const updateNoteById = async (body, id) => {
 export const deleteNoteById = async (id, body) => {
   const note = await Notes.destroy({ where: { id: id, createdBy: body.createdBy } });
   if (note) {
+    const id = body.createdBy.toString();
+    await client.del(id);
     return note;
   };
   throw new Error("Unable to delete note");
