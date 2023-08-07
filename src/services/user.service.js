@@ -6,6 +6,8 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 import { sendNewMail } from '../utils/email';
+import { send } from '../utils/send';
+import { receive } from '../utils/recieve';
 
 //signUp for new user
 export const signUp = async (body) => {
@@ -17,7 +19,10 @@ export const signUp = async (body) => {
   const hash = bcrypt.hashSync(body.password, saltRounds);
   body.password = hash;
   const data = await User.create(body);
-  return data.email;
+  send(`${data.firstName} User Created Successfull`);
+  receive();
+  const {firstName,lastName, email} = data
+  return {firstName,lastName,email};
 };
 
 //signIn registered user
