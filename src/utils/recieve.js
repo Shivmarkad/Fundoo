@@ -13,7 +13,7 @@ export const receive = () => {
                 throw error1;
             }
 
-            var queue = 'hello';
+            var queue = 'fundoo';
 
             channel.assertQueue(queue, {
                 durable: false

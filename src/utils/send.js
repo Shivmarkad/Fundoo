@@ -12,7 +12,7 @@ export const send = (message) => {
             if (err1) {
                 throw err1;
             }
-            var queue = 'hello';
+            var queue = 'fundoo';
             var msg = message;
             channel.assertQueue(queue, {
                 durable: false
