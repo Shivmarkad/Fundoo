@@ -13,17 +13,17 @@ router.post('', notesValidator,userAuth, notesController.createNote);
 router.get('', userAuth,redisData, notesController.getAllNotes);
 
 //get note by id
-router.get('/:id', userAuth, notesController.findNoteById);
+router.get('/:_id', userAuth, notesController.findNoteById);
 
 //update note by id
-router.put('/:id', userAuth, notesController.updateNoteById);
+router.put('/:_id', userAuth, notesController.updateNoteById);
 
 //delete note by id
-router.delete('/:id', userAuth, notesController.deleteNoteById);
+router.delete('/:_id', userAuth, notesController.deleteNoteById);
 
 //archieved notes
-router.put('/archieve/:id', userAuth, notesController.isArchieve);
+router.put('/archieve/:_id', userAuth, notesController.isArchieve);
 
 //trashed notes
-router.put('/trash/:id', userAuth, notesController.isTrash);
+router.put('/trash/:_id', userAuth, notesController.isTrash);
 export default router;

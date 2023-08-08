@@ -1,6 +1,6 @@
 // import { result } from '@hapi/joi/lib/base';
-import sequelize, { DataTypes } from '../config/database';
-const User = require('../models/user')(sequelize, DataTypes);
+import User from '../models/user.model';
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -11,7 +11,7 @@ import { receive } from '../utils/recieve';
 
 //signUp for new user
 export const signUp = async (body) => {
-  const user = await User.findOne({ where: { email: body.email } });
+  const user = await User.findOne( {email: body.email} );
   if (user) {
     throw new Error("You are already registered!!");
   };
@@ -28,7 +28,8 @@ export const signUp = async (body) => {
 //signIn registered user
 export const signIn = async (email, password) => {
 
-  const data = await User.findOne({ where: { email: email } });
+  const data = await User.findOne({ email: email });
+  console.log("this is the data during sign in",data);
   if (data == null) {
     throw new Error("user not found");
   };
@@ -48,7 +49,12 @@ export const resetPassword = async (password, id) => {
   const saltRounds = 10;
   const hash = bcrypt.hashSync(password, saltRounds);
   password = hash;
-  const data = await User.update({password:password},{where: {id: id}})
+  const update = {
+    password:password
+  }
+  const data = await User.findByIdAndUpdate({_id:id}, update, {
+    new: true
+  });
   if (data) {
     return data.email;
   } else {
@@ -59,7 +65,7 @@ export const resetPassword = async (password, id) => {
 //forgot password
 export const forgotPassword = async (email) => {
   
-  const data = await User.findOne({ where: { email: email } });
+  const data = await User.find({email: email  });
   if (data) {
     var token = jwt.sign({ email: data.email, id: data.id }, process.env.SECRET_KEY);
     const sent = sendNewMail(token,data.email)

@@ -35,7 +35,8 @@ export const createNote = async (req, res, next) => {
 };
 export const findNoteById = async (req, res, next) => {
   try {
-    const data = await notes.findNoteById(req.params.id,req);
+    console.log("This is the id ",req.params._id);
+    const data = await notes.findNoteById(req.params._id,req);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -50,7 +51,7 @@ export const findNoteById = async (req, res, next) => {
 };
 export const updateNoteById = async (req, res, next) => {
   try {
-    const data = await notes.updateNoteById(req.body,req.params.id);
+    const data = await notes.updateNoteById(req.body,req.params._id);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -66,7 +67,7 @@ export const updateNoteById = async (req, res, next) => {
 
 export const deleteNoteById = async (req, res, next) => {
   try {
-    const data = await notes.deleteNoteById(req.params.id,req.body);
+    const data = await notes.deleteNoteById(req.params._id,req.body);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -81,7 +82,7 @@ export const deleteNoteById = async (req, res, next) => {
 };
 export const isArchieve = async (req, res, next) => {
   try {
-    const data = await notes.isArchieve(req.params.id,req.body);
+    const data = await notes.isArchieve(req.params._id,req.body);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -96,7 +97,7 @@ export const isArchieve = async (req, res, next) => {
 };
 export const isTrash = async (req, res, next) => {
   try {
-    const data = await notes.isTrash(req.params.id,req.body);
+    const data = await notes.isTrash(req.params._id,req.body);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,

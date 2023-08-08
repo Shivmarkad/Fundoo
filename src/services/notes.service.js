@@ -1,32 +1,28 @@
-import sequelize, { DataTypes } from '../config/database';
 import { client } from '../config/redis';
-
-const Notes = require('../models/notes')(sequelize, DataTypes);
+import Note from '../models/notes.model'
 
 export const getAllNotes = async (req) => {
-  const note = await Notes.findAll({ where: { createdBy: req.body.createdBy } });
+  const note = await Note.find({ createdBy: req.body.createdBy });
   if (note) {
-    const id = req.body.createdBy.toString();
     const noteData = JSON.stringify(note);
-    await client.set(id,noteData);
+    await client.set(req.body.createdBy,noteData);
     return note;
   };
   throw new Error("Unable to find");
 };
 
 export const createNote = async (body) => {
-  const note = await Notes.create(body);
+  const note = await Note.create(body)
 
   if (note) {
-    const id = body.createdBy.toString();
-    await client.del(id);
+    await client.del(body.createdBy);
     return note;
   };
   throw new Error("unable to create note");
 };
 
 export const findNoteById = async (id, req) => {
-  const note = await Notes.findOne({ where: { id: id, createdBy: req.body.createdBy } });
+  const note = await Note.findOne({  _id: id, createdBy: req.body.createdBy });
   if (note) {
     return note;
   };
@@ -34,35 +30,34 @@ export const findNoteById = async (id, req) => {
 };
 
 export const updateNoteById = async (body, id) => {
-  const note = await Notes.update({ title: body.title, description: body.description }, { where: { id: id, createdBy: body.createdBy } });
+  const update = {title: body.title, description: body.description }
+  const note = await Note.findByIdAndUpdate({createdBy:body.createdBy,_id:id},update, {new:true});
   if (note) {
-    const id = body.createdBy.toString();
-    await client.del(id);
+    await client.del(body.createdBy);
     return note;
   };
   throw new Error("Unable to update the note");
 };
 
 export const deleteNoteById = async (id, body) => {
-  const note = await Notes.destroy({ where: { id: id, createdBy: body.createdBy } });
+  const note = await Note.findOneAndDelete({_id: id, createdBy: body.createdBy});
   if (note) {
-    const id = body.createdBy.toString();
-    await client.del(id);
+    await client.del(body.createdBy);
     return note;
   };
   throw new Error("Unable to delete note");
 };
 
 export const isArchieve = async (id, body) => {
-  const archieveNote = await Notes.findOne({ where: { id: id, createdBy: body.createdBy } });
+  const archieveNote = await Note.findOne({ _id: id, createdBy: body.createdBy });
   let archieveStatus;
   archieveNote.isArchieve ? archieveStatus = false : archieveStatus = true;
-  await Notes.update({ isArchieve: archieveStatus }, { where: { id: id, createdBy: body.createdBy } });
-};
+  await Note.findByIdAndUpdate({ id: id, createdBy: body.createdBy},{ isArchieve: archieveStatus },{new:true});
+};        
 
 export const isTrash = async (id, body) => {
-  const trashNote = await Notes.findOne({ where: { id: id, createdBy: body.createdBy } });
+  const trashNote = await Note.findOne({ _id: id, createdBy: body.createdBy});
   let trashStatus;
   trashNote.isTrash ? trashStatus = false : trashStatus = true;
-  const note = await Notes.update({ isTrash: trashStatus }, { where: { id: id, createdBy: body.createdBy } });
+  const note = await Note.findByIdAndUpdate({ id: id, createdBy: body.createdBy},{ isTrash: trashStatus },{new:true});
 };

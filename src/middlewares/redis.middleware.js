@@ -3,8 +3,8 @@ import {client} from '../config/redis';
 
 export const redisData = async (req, res, next) => {
     try {
-      const id = req.body.createdBy.toString();
-      const redisData = await client.get(id);
+   
+      const redisData = await client.get(req.body.createdBy);
       
       if (redisData !== null){
         const data = JSON.parse(redisData);
