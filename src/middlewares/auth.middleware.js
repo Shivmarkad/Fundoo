@@ -3,7 +3,6 @@ import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
 /**
  * Middleware to authenticate if user has a valid Authorization token
  * Authorization: Bearer <token>
@@ -15,20 +14,17 @@ dotenv.config();
 export const userAuth = async (req, res, next) => {
   try {
     let bearerToken = req.header('Authorization');
-    if (!bearerToken)
-      throw {
-        code: HttpStatus.BAD_REQUEST,
-        message: 'Authorization token is required'
-      };
-    bearerToken = bearerToken.split(' ')[1];
-
-    const { user } = await jwt.verify(bearerToken,process.env.SECRET_KEY);
-    if(user){
-      next();
-    }else{
-      throw new Error("Invalid User");
+    if (!bearerToken){
+    throw new Error("Authorization token required !!")
     }
+    bearerToken = bearerToken.split(' ')[1];
+    const user = jwt.verify(bearerToken, process.env.SECRET_KEY);
+    req.body.createdBy = user.id;
+    next()
   } catch (error) {
-    next(error);
+    res.status(HttpStatus.BAD_REQUEST).json({
+    code : HttpStatus.BAD_REQUEST,
+   message: `Error occured while authorization ${error}`
+  });
   }
 };
