@@ -39,10 +39,10 @@ export const updateNoteById = async (body, id) => {
   throw new Error("Unable to update the note");
 };
 
-export const deleteNoteById = async (id, body) => {
-  const note = await Note.findOneAndDelete({_id: id, createdBy: body.createdBy});
+export const deleteNoteById = async (id, userId) => {
+  const note = await Note.findOneAndDelete({_id: id, createdBy: userId});
   if (note) {
-    await client.del(body.createdBy);
+    await client.del(userId);
     return note;
   };
   throw new Error("Unable to delete note");
