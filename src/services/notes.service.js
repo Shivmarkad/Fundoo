@@ -21,8 +21,8 @@ export const createNote = async (body) => {
   throw new Error("unable to create note");
 };
 
-export const findNoteById = async (id, req) => {
-  const note = await Note.findOne({  _id: id, createdBy: req.body.createdBy });
+export const findNoteById = async (id, userId) => {
+  const note = await Note.findOne({  _id: id, createdBy: userId});
   if (note) {
     return note;
   };
