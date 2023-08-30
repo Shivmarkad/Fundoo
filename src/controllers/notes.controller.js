@@ -21,7 +21,7 @@ export const getAllNotes = async (req, res, next) => {
 export const createNote = async (req, res, next) => {
   try {
     const data = await notes.createNote(req.body);
-
+    console.log(data._id)
     res.status(HttpStatus.CREATED).json({
       code: HttpStatus.CREATED,
       data: data,
@@ -52,13 +52,11 @@ export const findNoteById = async (req, res, next) => {
 export const findNoteByIdWithCap = async (req, res, next) => {
   try {
     const data = await notes.findNoteById(req.params._id, req.body.createdBy);
-    console.log("this is the title",data.title)
     const title = data.title;
     const worker = new Worker('./src/controllers/getNoteWorker.js', { workerData: {title} });
     
     worker.on('message', (message) => {
-      const { result } = message;
-      console.log('Result from worker:', result);
+      const  result  = message;
       data.title = result;
       res.status(HttpStatus.OK).json({
         code: HttpStatus.OK,

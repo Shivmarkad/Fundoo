@@ -1,69 +1,85 @@
 import { expect } from 'chai';
 import request from 'supertest';
-
+import mongoose from 'mongoose';
 import app from '../../src/index';
 
 var token;
 var details;
+var noteId;
 describe('User APIs Test for registration', () => {
-//   describe('Post /users', () => {
-//     it('should return user created succesfully', (done) => {
-//       let details = {
-//         "firstName": "shiv",
-//         "lastName": "mark",
-//         "email": "shivs@223",
-//         "password": "31231234"
-//       }
-//       request(app)
-//         .post('/api/v1/users')
-//         .send(details)
-//         .end((err, res) => {
-//           expect(res.statusCode).to.be.equal(201);
-//           // expect(res.body.data).to.be.an('json');
 
-//           done();
-//         });
-//     });
-//   });
+  before((done) => {
+    const clearCollections = () => {
+      for (const collection in mongoose.connection.collections) {
+        // This will give one by one collection to delete it.
+        mongoose.connection.collections[collection].deleteOne(() => {});
+        // To delete collections so that the testing
+      }
+    };
+
+    const mongooseConnect = async () => {
+      await mongoose.connect(process.env.DATABASE_TEST);
+      clearCollections();
+    };
+
+    if (mongoose.connection.readyState === 0) {
+      mongooseConnect();
+    } else {
+      clearCollections();
+    }
+
+    done();
+  });
+
   describe('Post /users', () => {
+    it('should return user created succesfully', (done) => {
+      let details = {
+        firstName: "shiv",
+        lastName: "mark",
+        email: "shivs@223",
+        password: "31231234"
+      }
+      request(app)
+        .post('/api/v1/users')
+        .send(details)
+        .end((err, res) => {
+          expect(res.statusCode).to.be.equal(201);
+        });
+        done();
+    });
+  
     it('should return user already exists', (done) => {
-      details = {
-        "firstName":"any",
-        "lastName":"any",
-        "email": "shivs@223",
-        "password": "31231234"
+      let details = {
+        firstName: "shiv",
+        lastName: "mark",
+        email: "shivs@223",
+        password: "31231234"
       }
       request(app)
         .post('/api/v1/users')
         .send(details)
         .end((err, res) => {
           expect(res.statusCode).to.be.equal(400);
-          // expect(res.body.data).to.be.an('json');
-          done();
         });
+        done();
     });
-  });
-  describe('Post /users', () => {
+  
     it('should return invalid details', (done) => {
-      details = {}
+      let details = {}
       request(app)
         .post('/api/v1/users')
         .send(details)
         .end((err, res) => {
           expect(res.statusCode).to.be.equal(500);
-          // expect(res.body.data).to.be.an('json');
-          done();
         });
+        done();
     });
-  });
-});
-
-describe('User APIs Test for login', () => {
+  
   describe('Post /login', () => {
     it('should return user login successfully', (done) => {
-      details = {
-        "email": "shivs@223",
-        "password": "31231234"
+      let details = {
+        email: "shivs@223",
+        password: "31231234"
       }
       request(app)
         .post('/api/v1/users/login')
@@ -78,7 +94,7 @@ describe('User APIs Test for login', () => {
   
     it('should return invalid details', (done) => {
       details = {
-        "email": "shivganesh@gmail.com",
+        email: "shivganesh@gmail.com",
       };
       request(app)
         .post('/api/v1/users/login')
@@ -100,9 +116,7 @@ describe('User APIs Test for login', () => {
         });
     });
   });
-});
 
-describe('Note API Test for getAll the',()=>{
   describe('get /note',()=>{
 
     it('Should return all the notes',(done)=>{
@@ -127,14 +141,12 @@ describe('Note API Test for getAll the',()=>{
         });
     });
   });
-});
 
-describe('Note API Test for create new note',()=>{
   describe('Post /note',()=>{
     it('Should return note created successfully',(done)=>{
       let details = {
-        "title":"to add note",
-        "description":"testing the note"
+        title:"to add note",
+        description:"testing the note"
       }
       request(app)
         .post('/api/v1/note')
@@ -143,6 +155,7 @@ describe('Note API Test for create new note',()=>{
         .end((err,res)=>{
           expect(res.statusCode).to.be.equal(201);
           done();
+          noteId = res.body.data._id;
         });
     });
 
@@ -159,26 +172,24 @@ describe('Note API Test for create new note',()=>{
 
     it('Should return all fields required',(done)=>{
       let details = {
-        "title":"to add note"
+        title:"to add note"
       }
       request(app)
         .post('/api/v1/note')
         .set('Authorization',`Bearer ${token}`)
-        .send()
+        .send(details)
         .end((err,res)=>{
           expect(res.statusCode).to.be.equal(500);
           done();
         });
     });
   });
-});
 
-describe('Note API Test to find note',()=>{
   describe('get /note',()=>{
     it('Should return note found',(done)=>{
-      let id = 15;
+      // let id = 15;
       request(app)
-        .get(`/api/v1/note/${id}`)
+        .get(`/api/v1/note/${noteId}`)
         .set('Authorization',`Bearer ${token}`)
         .send()
         .end((err,res)=>{
@@ -211,19 +222,54 @@ describe('Note API Test to find note',()=>{
         });
     });
   });
-});
 
-describe('Note API Test to update note',()=>{
+  describe('get /note/idc/:_id',()=>{
+    it('Should return note found',(done)=>{
+      request(app)
+        .get(`/api/v1/note/idc/${noteId}`)
+        .set('Authorization',`Bearer ${token}`)
+        .send()
+        .end((err,res)=>{
+          expect(res.statusCode).to.be.equal(200);
+          done();
+        });
+    });
+ 
+    it('Should return note id mismatch',(done)=>{
+      let id = 2;
+      request(app)
+        .get(`/api/v1/note/idc/${id}`)
+        .set('Authorization',`Bearer ${token}`)
+        .send()
+        .end((err,res)=>{
+          expect(res.statusCode).to.be.equal(400);
+          done();
+        });
+    });
+  
+    it('Should return invalid id',(done)=>{
+      let id = "h";
+      request(app)
+        .get(`/api/v1/note/idc/${id}`)
+        .set('Authorization',`Bearer ${token}`)
+        .send()
+        .end((err,res)=>{
+          expect(res.statusCode).to.be.equal(400);
+          done();
+        });
+    });
+  });
+
   describe('Put /note',()=>{
 
     it('Should return note updated successfully',(done)=>{
-      let id = 15;
+      
       details = {
-        "title":"new updated note",
-        "description":"updating the note"
+        title:"new updated note",
+        description:"updating the note"
       }
       request(app)
-        .put(`/api/v1/note/${id}`)
+        .put(`/api/v1/note/${noteId}`)
         .set('Authorization',`Bearer ${token}`)
         .send(details)
         .end((err,res)=>{
@@ -260,4 +306,5 @@ describe('Note API Test to update note',()=>{
         });
     });
   });
+});
 });

@@ -189,6 +189,37 @@
               "ref":"#/securityDefinitions"
           }
         }]
+      },
+      "delete":{
+        "tag":["Note Part"],
+        "description":"To delete notes..",
+        "parameters": [
+          {
+            "name": "Delete Notes",
+            "in": "body",
+            "description": "Create note",
+            "schema": {
+              "$ref": "#/definitions/Delete"
+            }
+          }
+        ],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Deleted the notes"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        },
+        "security":[{
+          "BearerAuth":{
+              "ref":"#/securityDefinitions"
+          }
+        }]
       }
       },
       "/note/{id}": {
@@ -349,6 +380,37 @@
             }
           }]
         }
+    },
+      "/note/idc/{id}": {
+        "get": {
+          "tags": ["Note Part"],
+          "description": "Get capitalize title Note...",
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required":true,
+              "description": "Note id to get capitalize title note"
+            }
+          ],
+          "produces": ["application/json"],
+          "responses": {
+            "200": {
+              "description": "Note Fetched Successfully"
+            },
+            "400": {
+              "description": "Bad Request"
+            },
+            "500": {
+              "description": "Internal server error"
+            }
+          },
+          "security":[{
+            "BearerAuth":{
+                "ref":"#/securityDefinitions"
+            }
+          }]
+        }
     }
     },
       "definitions":{
@@ -406,6 +468,9 @@
                     "type":"string"
                 }
                 }
+            },
+        "Delete":{
+            "type":"array"
             }
         },
       "securityDefinitions":{
