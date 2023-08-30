@@ -29,7 +29,6 @@ export const signUp = async (body) => {
 export const signIn = async (email, password) => {
 
   const data = await User.findOne({ email: email });
-  console.log("this is the data during sign in",data);
   if (data == null) {
     throw new Error("user not found");
   };

@@ -12,6 +12,11 @@ router.post('', notesValidator,userAuth, notesController.createNote);
 // to get note
 router.get('', userAuth,redisData, notesController.getAllNotes);
 
+// to get notes by ids
+router.get('/idc/:_id', userAuth, notesController.findNoteByIdWithCap);
+
+//delete notes by ids
+router.delete('', userAuth, notesController.deleteNotesByIds);
 //get note by id
 router.get('/:_id', userAuth, notesController.findNoteById);
 
