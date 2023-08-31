@@ -1,0 +1,12 @@
+APP_HOST = Host_URL
+APP_PORT = Port
+
+API_VERSION = app_version
+
+SECRET_KEY = secrete_KEY
+EMAIL= your_email_addres
+PASSWORD_EMAIL = Your_email_app_password
+
+DATABASE = database_URL
+DATABASE_TEST = test_database_URL
+
