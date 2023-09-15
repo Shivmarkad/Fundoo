@@ -197,7 +197,7 @@
           {
             "name": "Delete Notes",
             "in": "body",
-            "description": "Create note",
+            "description": "Delete note",
             "schema": {
               "$ref": "#/definitions/Delete"
             }
