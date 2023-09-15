@@ -192,12 +192,12 @@
       },
       "delete":{
         "tag":["Note Part"],
-        "description":"To delete notes..",
+        "description":"To delete notes by their ids..",
         "parameters": [
           {
             "name": "Delete Notes",
             "in": "body",
-            "description": "Delete note",
+            "description": "Delete notes by ids",
             "schema": {
               "$ref": "#/definitions/Delete"
             }
@@ -470,7 +470,15 @@
                 }
             },
         "Delete":{
-            "type":"array"
+            "type":"object",
+            "properties":{
+              "ids":{
+                "type":"array",
+                "items":{
+                  "type":"string"
+                }
+              }
+            }
             }
         },
       "securityDefinitions":{
