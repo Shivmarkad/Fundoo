@@ -13,8 +13,6 @@ import {
 } from './middlewares/error.middleware';
 import logger, { logStream } from './config/logger';
 import morgan from 'morgan';
-// import cluster from 'cluster';
-// import os from 'os';
 const swaggerUi = require('swagger-ui-express');
 const swaggerDoc = require('./swagger/swagger.json');
 
@@ -36,18 +34,7 @@ app.use(appErrorHandler);
 app.use(genericErrorHandler);
 app.use(notFound);
 
-// if (cluster.isPrimary) {
-//   const numCPUs = os.cpus().length;
-//   for (let i = 0; i < numCPUs; i++) {
-//     cluster.fork();
-//   }
-//   cluster.on('exit', (worker, code, signal) => {
-//     console.log(`Worker ${worker.process.pid} died`);
-//   });
-// } else {
-  
-// }
 app.listen(port, () => {
-  logger.info(`Worker ${process.pid} listening on port ${port}`);
+  logger.info(`server started at ${host}:${port}/api/${process.env.API_VERSION}/`);
 });
 export default app;
