@@ -1,4 +1,5 @@
-#!/usr/bin/env node
+import logger from '../config/logger';
+
 
 var amqp = require('amqplib/callback_api');
 
@@ -19,10 +20,10 @@ export const receive = () => {
                 durable: false
             });
 
-            console.log(" [*] Waiting for messages in %s. To exit press CTRL+C", queue);
+            logger.info(`[*] Waiting for messages in ${queue}. To exit press CTRL+C`);
 
             channel.consume(queue, function (msg) {
-                console.log(" [x] Received %s", msg.content.toString());
+                logger.info(` [x] Received  ${msg.content.toString()}`);
             }, {
                 noAck: true
             });

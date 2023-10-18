@@ -1,5 +1,5 @@
-#!/usr/bin/env node
-//
+import logger from '../config/logger';
+
 const amqp = require('amqplib/callback_api');
 
 export const send = (message) => {
@@ -18,7 +18,7 @@ export const send = (message) => {
                 durable: false
             });
             channel.sendToQueue(queue, Buffer.from(msg));
-            console.log(" [x] Sent %s", msg);
+            logger.info(` [x] Sent ${msg}`);
         });
     });
 };
