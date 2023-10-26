@@ -1,3 +1,4 @@
+const { Worker } = require('worker_threads');
 import { client } from '../config/redis';
 import Note from '../models/notes.model'
 
@@ -21,9 +22,13 @@ export const createNote = async (body) => {
   throw new Error("unable to create note");
 };
 
-export const findNoteById = async (id, userId) => {
-  const note = await Note.findOne({ _id: id, createdBy: userId });
+export const findNoteById = async (req) => {
+  const note = await Note.findOne({ _id: req.params._id, createdBy: req.body.createdBy });
+
   if (note) {
+    if(req.query.cap || false){
+      note.title = await capTitleWorker(note.title)
+    }
     return note;
   };
   throw new Error("Unable to find the note");
@@ -73,3 +78,15 @@ export const isTrash = async (id, body) => {
   throw new Error("Unable to delete note");
 
 };
+
+const capTitleWorker = async (title) =>{
+ return new Promise((resolve, reject) => {
+  const worker =  new Worker('./src/utils/getNoteWorker.js', { workerData: {title} });
+  worker.on('message', (message) => {
+    resolve(message.result);
+  });
+  worker.on('error', (err) => {
+    reject(err);
+  });
+})
+}

@@ -1,4 +1,3 @@
-const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 import HttpStatus from 'http-status-codes';
 import * as notes from '../services/notes.service';
 
@@ -21,7 +20,6 @@ export const getAllNotes = async (req, res, next) => {
 export const createNote = async (req, res, next) => {
   try {
     const data = await notes.createNote(req.body);
-    console.log(data._id)
     res.status(HttpStatus.CREATED).json({
       code: HttpStatus.CREATED,
       data: data,
@@ -36,7 +34,7 @@ export const createNote = async (req, res, next) => {
 };
 export const findNoteById = async (req, res, next) => {
   try {
-    const data = await notes.findNoteById(req.params._id, req.body.createdBy);
+    const data = await notes.findNoteById(req);
     res.status(HttpStatus.OK).json({
       code: HttpStatus.OK,
       data: data,
@@ -49,28 +47,7 @@ export const findNoteById = async (req, res, next) => {
     });
   }
 };
-export const findNoteByIdWithCap = async (req, res, next) => {
-  try {
-    const data = await notes.findNoteById(req.params._id, req.body.createdBy);
-    const title = data.title;
-    const worker = new Worker('./src/controllers/getNoteWorker.js', { workerData: {title} });
-    
-    worker.on('message', (message) => {
-      const  result  = message;
-      data.title = result;
-      res.status(HttpStatus.OK).json({
-        code: HttpStatus.OK,
-        data: data,
-        message: 'Note fetched successfully'
-      });
-    });
-  } catch (error) {
-    res.status(HttpStatus.BAD_REQUEST).json({
-      code: HttpStatus.BAD_REQUEST,
-      message: `${error}`
-    });
-  }
-};
+
 export const updateNoteById = async (req, res, next) => {
   try {
     const data = await notes.updateNoteById(req.body, req.params._id);

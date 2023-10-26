@@ -232,6 +232,11 @@
               "required":true,
               "in": "path",
               "description": "Get note by Id"
+            },
+            {
+              "name": "cap",
+              "in": "query",
+              "description": "Get note by Id with capital title"
             }
           ],
           "produces": ["application/json"],
@@ -366,37 +371,6 @@
           "responses": {
             "200": {
               "description": "Note trashed Successfully"
-            },
-            "400": {
-              "description": "Bad Request"
-            },
-            "500": {
-              "description": "Internal server error"
-            }
-          },
-          "security":[{
-            "BearerAuth":{
-                "ref":"#/securityDefinitions"
-            }
-          }]
-        }
-    },
-      "/note/idc/{id}": {
-        "get": {
-          "tags": ["Note Part"],
-          "description": "Get capitalize title Note...",
-          "parameters": [
-            {
-              "name": "id",
-              "in": "path",
-              "required":true,
-              "description": "Note id to get capitalize title note"
-            }
-          ],
-          "produces": ["application/json"],
-          "responses": {
-            "200": {
-              "description": "Note Fetched Successfully"
             },
             "400": {
               "description": "Bad Request"
