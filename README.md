@@ -1,5 +1,4 @@
-**Fundoo **
-
+**Fundoo-Note-App**
 
 **To run this project locally follow these steps**
 
