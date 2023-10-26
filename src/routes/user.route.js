@@ -1,18 +1,18 @@
 import express from 'express';
 import * as userController from '../controllers/user.controller';
-import { newUserValidator } from '../validators/user.validator';
+import * as validator from '../validators/user.validator';
 import { userAuth } from '../middlewares/auth.middleware';
 
 const router = express.Router();
 
 //route to create a new user
-router.post('', newUserValidator, userController.signUp); 
+router.post('', validator.newUserValidator, userController.signUp); 
 
 // to login the user
-router.post('/login',userController.signIn)
+router.post('/login',validator.loginUserValidator, userController.signIn)
 
 // to reset password
-router.post('/reset',userAuth,userController.resetPassword)
+router.post('/reset',validator.resetPasswordValidator,userAuth,userController.resetPassword)
 
 // to reset password
 router.post('/forgot',userController.forgotPassword)
