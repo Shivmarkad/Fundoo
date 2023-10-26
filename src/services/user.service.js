@@ -1,6 +1,4 @@
-// import { result } from '@hapi/joi/lib/base';
 import User from '../models/user.model';
-
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -48,12 +46,7 @@ export const resetPassword = async (password, id) => {
   const saltRounds = 10;
   const hash = bcrypt.hashSync(password, saltRounds);
   password = hash;
-  const update = {
-    password:password
-  }
-  const data = await User.findByIdAndUpdate({_id:id}, update, {
-    new: true
-  });
+  const data = await User.findByIdAndUpdate({_id:id}, { password: password }, {new: true});
   if (data) {
     return data.email;
   } else {
@@ -64,12 +57,12 @@ export const resetPassword = async (password, id) => {
 //forgot password
 export const forgotPassword = async (email) => {
   
-  const data = await User.find({email: email  });
+  const data = await User.findOne({email: email});
   if (data) {
     var token = jwt.sign({ email: data.email, id: data.id }, process.env.SECRET_KEY);
     const sent = sendNewMail(token,data.email)
     return sent;
   } else {
-    throw new Error("Unable to change Password");
+    throw new Error("Email address is incorrect");
   };
 };
