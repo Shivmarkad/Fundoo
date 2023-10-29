@@ -1,0 +1,19 @@
+services:
+  mongodb_db:
+    image: mongo:latest
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongodb-data:/data/db
+  rabbitmq:
+    image: rabbitmq
+    ports:
+      - '5672:5672'
+  custom_app:
+    build: ./
+    ports:
+      - '3000:3000'
+    depends_on:
+      - rabbitmq
+volumes:
+  mongodb-data:
