@@ -1,10 +1,11 @@
 import logger from '../config/logger';
-
+import dotenv from 'dotenv';
+dotenv.config();
 const amqp = require('amqplib/callback_api');
 
 export const send = (message) => {
 
-    amqp.connect('amqp://localhost', function (err, connection) {
+    amqp.connect(`amqp://${process.env.RABBIMQ_SERVER}`, function (err, connection) {
         if (err) {
             throw new Error(err);
         }
