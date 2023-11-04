@@ -56,9 +56,12 @@ export const deleteNoteById = async (id, userId) => {
 export const isArchieve = async (id, body) => {
   const archieveNote = await Note.findOne({ _id: id, createdBy: body.createdBy });
   let archieveStatus;
-  archieveNote.isArchieve ? archieveStatus = false : archieveStatus = true;
-  const note = await Note.findByIdAndUpdate({ _id: id, createdBy: body.createdBy }, { isArchieve: archieveStatus }, { new: true });
-  if (note) {
+  if (archieveNote) {
+    archieveNote.isArchieve ? archieveStatus = false : archieveStatus = true;
+    const note = await Note.findByIdAndUpdate({ _id: id, createdBy: body.createdBy }, 
+      { isArchieve: archieveStatus }, 
+      { new: true });
+
     await client.del(body.createdBy);
     return note;
   }
@@ -69,9 +72,11 @@ export const isArchieve = async (id, body) => {
 export const isTrash = async (id, body) => {
   const trashNote = await Note.findOne({ _id: id, createdBy: body.createdBy });
   let trashStatus;
-  trashNote.isTrash ? trashStatus = false : trashStatus = true;
-  const note = await Note.findByIdAndUpdate({ _id: id, createdBy: body.createdBy }, { isTrash: trashStatus }, { new: true });
-  if (note) {
+  if (trashNote) {
+    trashNote.isTrash ? trashStatus = false : trashStatus = true;
+    const note = await Note.findByIdAndUpdate({ _id: id, createdBy: body.createdBy }, 
+                { isTrash: trashStatus }, 
+                { new: true });
     await client.del(body.createdBy);
     return note;
   }
