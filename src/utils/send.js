@@ -5,7 +5,7 @@ const amqp = require('amqplib/callback_api');
 
 export const send = (message) => {
 
-    amqp.connect(`amqp://${process.env.RABBIMQ_SERVER}`, function (err, connection) {
+    amqp.connect(`${process.env.RABBITMQ_SERVER}`, function (err, connection) {
         if (err) {
             throw new Error(err);
         }
