@@ -19,7 +19,7 @@ router.delete('', userAuth, notesController.deleteNotesByIds);
 router.get('/:_id', userAuth, notesController.findNoteById);
 
 //update note by id
-router.put('/:_id', userAuth, notesController.updateNoteById);
+router.put('/:_id',notesValidator, userAuth, notesController.updateNoteById);
 
 //delete note by id
 router.delete('/:_id', userAuth, notesController.deleteNoteById);
