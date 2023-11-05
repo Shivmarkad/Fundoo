@@ -1,5 +1,4 @@
 import Joi from '@hapi/joi';
-import { json } from 'sequelize';
 
 export const notesValidator = (req, res, next) => {
   const schema = Joi.object({

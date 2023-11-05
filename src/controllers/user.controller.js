@@ -1,7 +1,7 @@
 import HttpStatus from 'http-status-codes';
 import * as UserService from '../services/user.service';
 import {userlogger} from '../config/logger';
-import { error } from '@hapi/joi/lib/base';
+
 export const signUp = async (req, res, next) => {  
   try {
     const data = await UserService.signUp(req.body);
