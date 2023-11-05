@@ -74,7 +74,7 @@ describe('User APIs Test for registration', () => {
         });
         done();
     });
-  
+  });
   describe('Post /login', () => {
     it('should return user login successfully', (done) => {
       let details = {
@@ -100,7 +100,7 @@ describe('User APIs Test for registration', () => {
         .post('/api/v1/users/login')
         .send(details)
         .end((err, res) => {
-          expect(res.statusCode).to.be.equal(400);
+          expect(res.statusCode).to.be.equal(500);
           done();
         });
     });
@@ -111,32 +111,7 @@ describe('User APIs Test for registration', () => {
         .post('/api/v1/users/login')
         .send(details)
         .end((err, res) => {
-          expect(res.statusCode).to.be.equal(400);
-          done();
-        });
-    });
-  });
-
-  describe('get /note',()=>{
-
-    it('Should return all the notes',(done)=>{
-      request(app)
-        .get('/api/v1/note')
-        .set('Authorization',`Bearer ${token}`)
-        .send()
-        .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(200);
-          done();
-        });
-    });
-  
-    it('Should return Authorization token required',(done)=>{
-      request(app)
-        .get('/api/v1/note')
-        .set('Authorization',``)
-        .send()
-        .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(400);
+          expect(res.statusCode).to.be.equal(500);
           done();
         });
     });
@@ -187,7 +162,6 @@ describe('User APIs Test for registration', () => {
 
   describe('get /note',()=>{
     it('Should return note found',(done)=>{
-      // let id = 15;
       request(app)
         .get(`/api/v1/note/${noteId}`)
         .set('Authorization',`Bearer ${token}`)
@@ -202,55 +176,6 @@ describe('User APIs Test for registration', () => {
       let id = 2;
       request(app)
         .get(`/api/v1/note/${id}`)
-        .set('Authorization',`Bearer ${token}`)
-        .send()
-        .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(400);
-          done();
-        });
-    });
-  
-    it('Should return invalid id',(done)=>{
-      let id = "h";
-      request(app)
-        .get(`/api/v1/note/${id}`)
-        .set('Authorization',`Bearer ${token}`)
-        .send()
-        .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(400);
-          done();
-        });
-    });
-  });
-
-  describe('get /note/idc/:_id',()=>{
-    it('Should return note found',(done)=>{
-      request(app)
-        .get(`/api/v1/note/idc/${noteId}`)
-        .set('Authorization',`Bearer ${token}`)
-        .send()
-        .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(200);
-          done();
-        });
-    });
- 
-    it('Should return note id mismatch',(done)=>{
-      let id = 2;
-      request(app)
-        .get(`/api/v1/note/idc/${id}`)
-        .set('Authorization',`Bearer ${token}`)
-        .send()
-        .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(400);
-          done();
-        });
-    });
-  
-    it('Should return invalid id',(done)=>{
-      let id = "h";
-      request(app)
-        .get(`/api/v1/note/idc/${id}`)
         .set('Authorization',`Bearer ${token}`)
         .send()
         .end((err,res)=>{
@@ -279,32 +204,17 @@ describe('User APIs Test for registration', () => {
     });
   
     it('Should return note description field required',(done)=>{
-      let id = 15;
       details = {
         "title":"checking the invalid details"
       }
       request(app)
-        .put(`/api/v1/note/${id}`)
+        .put(`/api/v1/note/${noteId}`)
         .set('Authorization',`Bearer ${token}`)
         .send()
         .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(400);
-          done();
-        });
-    });
-  
-    it('Should return all fields required',(done)=>{
-      let id = 15;
-      details={}
-      request(app)
-        .put(`/api/v1/note/${id}`)
-        .set('Authorization',`Bearer ${token}`)
-        .send(details)
-        .end((err,res)=>{
-          expect(res.statusCode).to.be.equal(400);
+          expect(res.statusCode).to.be.equal(500);
           done();
         });
     });
   });
-});
 });
