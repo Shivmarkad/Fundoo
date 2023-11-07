@@ -1,19 +1,30 @@
 services:
-  mongodb_db:
+  mongodb:
     image: mongo:latest
     ports:
-      - '27017:27017'
+      - "27017:27017"
     volumes:
       - mongodb-data:/data/db
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+
   rabbitmq:
     image: rabbitmq
     ports:
       - '5672:5672'
-  custom_app:
+
+  fundoo:
     build: ./
     ports:
-      - '3000:3000'
+      - "3000:3000"
+    env_file:
+      - ./.env
     depends_on:
+      - mongodb
+      - redis
       - rabbitmq
 volumes:
   mongodb-data:
