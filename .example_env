@@ -9,4 +9,4 @@ PASSWORD_EMAIL = Your_email_app_password
 
 DATABASE = database_URL
 DATABASE_TEST = test_database_URL
-
+REDIS_URL=redis-url
