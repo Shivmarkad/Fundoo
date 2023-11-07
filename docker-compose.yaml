@@ -1,6 +1,6 @@
 services:
   mongodb:
-    image: mongo:latest
+    image: mvertes/alpine-mongo
     ports:
       - "27017:27017"
     volumes:
@@ -20,6 +20,8 @@ services:
     build: ./
     ports:
       - "3000:3000"
+    volumes:
+      - ./src:/usr/src/app/src
     env_file:
       - ./.env
     depends_on:
