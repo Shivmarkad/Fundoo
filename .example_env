@@ -7,7 +7,7 @@ SECRET_KEY = secrete_KEY
 EMAIL= your_email_addres
 PASSWORD_EMAIL = Your_email_app_password
 
-DATABASE = database_URL
-DATABASE_TEST = test_database_URL
-RABBITMQ_SERVER = rabbitmq-url
-REDIS_URL=redis-url
+DATABASE=mongodb://mongodb:27017/Fundoo
+DATABASE_TEST=mongodb://mongodb:27017/Fundoo_test
+RABBITMQ_SERVER=amqp://rabbitmq:5672
+REDIS_URL=redis://redis:6379
